@@ -4,7 +4,7 @@ title: About Me
 permalink: /about/
 ---
 
-![][/images/kevin-minions.png]
+![](/images/kevin-minions.png)
 
 Hi, my name is Kevin - the minion - from films such as Despicable Me, Despicable Me 2, and Minions.
 
