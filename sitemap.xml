@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://kslader8.github.io/kslader8-thoughts/2020/12/27/hackerrank-question.html</loc>
+<loc>https://kslader8.github.io/kslader8-thoughts/hackerrank/2020/12/27/hackerrank-question.html</loc>
 <lastmod>2020-12-27T00:00:00-06:00</lastmod>
 </url>
 <url>
@@ -19,6 +19,10 @@
 <url>
 <loc>https://kslader8.github.io/kslader8-thoughts/nlp/2021/01/22/spacy-version-3.html</loc>
 <lastmod>2021-01-22T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>https://kslader8.github.io/kslader8-thoughts/hackerrank/2021/02/13/hackerrank-questions.html</loc>
+<lastmod>2021-02-13T00:00:00-06:00</lastmod>
 </url>
 <url>
 <loc>https://kslader8.github.io/kslader8-thoughts/about/</loc>
