@@ -4,9 +4,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Title | The Misadventures of Kevin</title>
+<title>Azure ML Workspace - [Tensorflow] Time Series Example | The Misadventures of Kevin</title>
 <meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="Title" />
+<meta property="og:title" content="Azure ML Workspace - [Tensorflow] Time Series Example" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="A chronicle of the random thoughts and adventures of Kevin" />
 <meta property="og:description" content="A chronicle of the random thoughts and adventures of Kevin" />
@@ -16,7 +16,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-03-29T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://kslader8.github.io/kslader8-thoughts/2021/03/29/aml-exp.html","@type":"BlogPosting","headline":"Title","dateModified":"2021-03-29T00:00:00-05:00","datePublished":"2021-03-29T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kslader8.github.io/kslader8-thoughts/2021/03/29/aml-exp.html"},"description":"A chronicle of the random thoughts and adventures of Kevin","@context":"https://schema.org"}</script>
+{"url":"https://kslader8.github.io/kslader8-thoughts/2021/03/29/aml-exp.html","@type":"BlogPosting","headline":"Azure ML Workspace - [Tensorflow] Time Series Example","dateModified":"2021-03-29T00:00:00-05:00","datePublished":"2021-03-29T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kslader8.github.io/kslader8-thoughts/2021/03/29/aml-exp.html"},"description":"A chronicle of the random thoughts and adventures of Kevin","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/kslader8-thoughts/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://kslader8.github.io/kslader8-thoughts/feed.xml" title="The Misadventures of Kevin" /><link rel="shortcut icon" type="image/x-icon" href="/kslader8-thoughts/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
@@ -87,13 +87,13 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Title</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-03-29T00:00:00-05:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Azure ML Workspace - [Tensorflow] Time Series Example</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-03-29T00:00:00-05:00" itemprop="datePublished">
         Mar 29, 2021
       </time>
        • <span class="read-time" title="Estimated read time">
     
     
-      13 min read
+      15 min read
     
 </span></p>
 
@@ -1225,8 +1225,35 @@ Minimum number of nodes requested have been provisioned
     <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_col</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_subplots</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
         <span class="n">plot_col_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_indices</span><span class="p">[</span><span class="n">plot_col</span><span class="p">]</span>
+        <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">example</span>
+        <span class="n">max_n</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_subplots</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_n</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">max_n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">plot_col</span><span class="si">}</span><span class="s1"> [normed]&#39;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_indices</span><span class="p">,</span> <span class="n">inputs</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:,</span> <span class="n">plot_col_index</span><span class="p">],</span>
+                     <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inputs&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">10</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_columns</span><span class="p">:</span>
+                <span class="n">label_col_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_columns_indices</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plot_col</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">label_col_index</span> <span class="o">=</span> <span class="n">plot_col_index</span>
+
+            <span class="k">if</span> <span class="n">label_col_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_indices</span><span class="p">,</span> <span class="n">labels</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:,</span> <span class="n">label_col_index</span><span class="p">],</span>
+                <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Labels&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;#2ca02c&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_indices</span><span class="p">,</span> <span class="n">predictions</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:,</span> <span class="n">label_col_index</span><span class="p">],</span>
+                          <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Predictions&#39;</span><span class="p">,</span>
+                          <span class="n">c</span><span class="o">=</span><span class="s1">&#39;#ff7f0e&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
         
-        <span class="c1"># TODO - plot function</span>
         
     <span class="k">def</span> <span class="nf">make_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
@@ -1333,6 +1360,9 @@ Minimum number of nodes requested have been provisioned
 <span class="n">val_performance</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">single_step_window</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
 <span class="n">tst_performance</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">single_step_window</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
+<span class="n">wide_window</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">baseline</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;baseline_pred&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
+
 <span class="c1"># Train Models</span>
 <span class="k">def</span> <span class="nf">compile_and_fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
     <span class="n">early_stopping</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">EarlyStopping</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_loss&#39;</span><span class="p">,</span>
@@ -1367,6 +1397,9 @@ Minimum number of nodes requested have been provisioned
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">train_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
 <span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;linear_coef&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
 
+<span class="n">wide_window</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">linear</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;linear_pred&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
+
 <span class="c1"># Train Single Step Dense Model</span>
 <span class="n">single_step_dense</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
     <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
@@ -1379,6 +1412,9 @@ Minimum number of nodes requested have been provisioned
 <span class="n">tst_performance</span><span class="p">[</span><span class="s1">&#39;single_step_dense&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">single_step_dense</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">single_step_window</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="n">tf</span><span class="o">.</span><span class="n">saved_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">single_step_dense</span><span class="p">,</span> <span class="s1">&#39;./outputs/model/single_step_dense&#39;</span><span class="p">)</span>
+
+<span class="n">wide_window</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">single_step_dense</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;single_step_dense_pred&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
 
 <span class="c1"># Train Multi Step Dense Model</span>
 <span class="n">multi_step_dense</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
@@ -1397,6 +1433,9 @@ Minimum number of nodes requested have been provisioned
 <span class="n">tst_performance</span><span class="p">[</span><span class="s1">&#39;multi_step_dense&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">multi_step_dense</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">conv_window</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="n">tf</span><span class="o">.</span><span class="n">saved_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">multi_step_dense</span><span class="p">,</span> <span class="s1">&#39;./outputs/model/multi_step_dense&#39;</span><span class="p">)</span>
+
+<span class="c1"># wide_window.plot(target, multi_step_dense)</span>
+<span class="c1"># run.log_image(&#39;multi_step_dense_pred&#39;, plot=plt)</span>
 
 <span class="c1"># Train Conv Model</span>
 <span class="n">conv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
@@ -1469,6 +1508,8 @@ Minimum number of nodes requested have been provisioned
     <span class="n">run</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;best_score&#39;</span><span class="p">,</span> <span class="n">best_score</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">best_model</span> <span class="o">!=</span> <span class="s2">&quot;baseline&quot;</span><span class="p">:</span> <span class="n">model</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">register_model</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">best_model</span><span class="p">,</span> <span class="n">model_path</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;outputs/model/</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1">#### Setup Training Environment </span>
 </pre></div>
 
     </div>
@@ -1492,12 +1533,6 @@ Minimum number of nodes requested have been provisioned
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Setup-Training-Environment">Setup Training Environment<a class="anchor-link" href="#Setup-Training-Environment"> </a></h4>
-</div>
-</div>
-</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -1624,7 +1659,7 @@ Minimum number of nodes requested have been provisioned
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;https://ml.azure.com/runs/aml_exp_1617218351_68997fbe?wsid=/subscriptions/f3b5840b-706e-44ba-8aa1-6fd3fc8aaab0/resourcegroups/ds-workspace/workspaces/minion-lab&amp;tid=e6777dcd-6f87-4dd0-92e5-e98312157dac&#39;</pre>
+<pre>&#39;https://ml.azure.com/runs/aml_exp_1617233359_a7595e84?wsid=/subscriptions/f3b5840b-706e-44ba-8aa1-6fd3fc8aaab0/resourcegroups/ds-workspace/workspaces/minion-lab&amp;tid=e6777dcd-6f87-4dd0-92e5-e98312157dac&#39;</pre>
 </div>
 
 </div>
@@ -1666,21 +1701,24 @@ Minimum number of nodes requested have been provisioned
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;linear_coef&#39;: &#39;aml://artifactId/ExperimentRun/dcid.aml_exp_1617218351_68997fbe/linear_coef_1617218696.png&#39;,
- &#39;performance_mae&#39;: &#39;aml://artifactId/ExperimentRun/dcid.aml_exp_1617218351_68997fbe/performance_mae_1617218715.png&#39;,
+<pre>{&#39;baseline_pred&#39;: &#39;aml://artifactId/ExperimentRun/dcid.aml_exp_1617233359_a7595e84/baseline_pred_1617233672.png&#39;,
+ &#39;linear_coef&#39;: &#39;aml://artifactId/ExperimentRun/dcid.aml_exp_1617233359_a7595e84/linear_coef_1617233676.png&#39;,
+ &#39;linear_pred&#39;: &#39;aml://artifactId/ExperimentRun/dcid.aml_exp_1617233359_a7595e84/linear_pred_1617233676.png&#39;,
+ &#39;single_step_dense_pred&#39;: &#39;aml://artifactId/ExperimentRun/dcid.aml_exp_1617233359_a7595e84/single_step_dense_pred_1617233681.png&#39;,
+ &#39;performance_mae&#39;: &#39;aml://artifactId/ExperimentRun/dcid.aml_exp_1617233359_a7595e84/performance_mae_1617233696.png&#39;,
  &#39;val_baseline&#39;: [18.686260223388672, 3.2065956592559814],
- &#39;val_linear&#39;: [25045.705078125, 158.12350463867188],
- &#39;val_single_step_dense&#39;: [12.049277305603027, 2.5712552070617676],
- &#39;val_multi_step_dense&#39;: [105.29651641845703, 9.513522148132324],
- &#39;val_conv&#39;: [16.507810592651367, 2.9061272144317627],
- &#39;val_lstm&#39;: [80574.6171875, 283.7806091308594],
+ &#39;val_linear&#39;: [605690.9375, 777.9266357421875],
+ &#39;val_single_step_dense&#39;: [12.129790306091309, 2.596614122390747],
+ &#39;val_multi_step_dense&#39;: [23.9085693359375, 3.903738021850586],
+ &#39;val_conv&#39;: [17.16225242614746, 2.9845776557922363],
+ &#39;val_lstm&#39;: [81859.9296875, 286.0354919433594],
  &#39;tst_baseline&#39;: [20.958070755004883, 3.920870542526245],
- &#39;tst_linear&#39;: [20818.353515625, 144.19789123535156],
- &#39;tst_single_step_dense&#39;: [14.024746894836426, 3.2437658309936523],
- &#39;tst_multi_step_dense&#39;: [70.03379821777344, 7.117403507232666],
- &#39;tst_conv&#39;: [20.42483901977539, 3.2997443675994873],
+ &#39;tst_linear&#39;: [502930.53125, 709.0858154296875],
+ &#39;tst_single_step_dense&#39;: [14.61068344116211, 3.2360215187072754],
+ &#39;tst_multi_step_dense&#39;: [20.170698165893555, 4.205769062042236],
+ &#39;tst_conv&#39;: [17.6562557220459, 3.5512776374816895],
  &#39;best_model&#39;: &#39;single_step_dense&#39;,
- &#39;best_score&#39;: 3.2437658309936523}</pre>
+ &#39;best_score&#39;: 3.2360215187072754}</pre>
 </div>
 
 </div>
@@ -1722,15 +1760,15 @@ Minimum number of nodes requested have been provisioned
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>baseline_val             : 3.2066
 baseline_tst             : 3.9209
-conv_val                 : 2.9061
-conv_tst                 : 3.2997
-linear_val               : 158.1235
-linear_tst               : 144.1979
-lstm_val                 : 283.7806
-multi_step_dense_val     : 9.5135
-multi_step_dense_tst     : 7.1174
-single_step_dense_val    : 2.5713
-single_step_dense_tst    : 3.2438
+conv_val                 : 2.9846
+conv_tst                 : 3.5513
+linear_val               : 777.9266
+linear_tst               : 709.0858
+lstm_val                 : 286.0355
+multi_step_dense_val     : 3.9037
+multi_step_dense_tst     : 4.2058
+single_step_dense_val    : 2.5966
+single_step_dense_tst    : 3.2360
 </pre>
 </div>
 </div>
@@ -1771,13 +1809,15 @@ single_step_dense_tst    : 3.2438
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;azureml-logs/55_azureml-execution-tvmps_0131a389317277292ba2a81189e3531d414e8ac8f29d13fd64056daa66d1597f_d.txt&#39;,
- &#39;azureml-logs/65_job_prep-tvmps_0131a389317277292ba2a81189e3531d414e8ac8f29d13fd64056daa66d1597f_d.txt&#39;,
+<pre>[&#39;azureml-logs/55_azureml-execution-tvmps_0c357d5ce4f8eda465b3f47f7b95b579e656516823eef14997ff742d99f7565e_d.txt&#39;,
+ &#39;azureml-logs/65_job_prep-tvmps_0c357d5ce4f8eda465b3f47f7b95b579e656516823eef14997ff742d99f7565e_d.txt&#39;,
  &#39;azureml-logs/70_driver_log.txt&#39;,
- &#39;azureml-logs/75_job_post-tvmps_0131a389317277292ba2a81189e3531d414e8ac8f29d13fd64056daa66d1597f_d.txt&#39;,
+ &#39;azureml-logs/75_job_post-tvmps_0c357d5ce4f8eda465b3f47f7b95b579e656516823eef14997ff742d99f7565e_d.txt&#39;,
  &#39;azureml-logs/process_info.json&#39;,
  &#39;azureml-logs/process_status.json&#39;,
- &#39;linear_coef_1617218696.png&#39;,
+ &#39;baseline_pred_1617233672.png&#39;,
+ &#39;linear_coef_1617233676.png&#39;,
+ &#39;linear_pred_1617233676.png&#39;,
  &#39;logs/azureml/106_azureml.log&#39;,
  &#39;logs/azureml/dataprep/backgroundProcess.log&#39;,
  &#39;logs/azureml/dataprep/backgroundProcess_Telemetry.log&#39;,
@@ -1798,31 +1838,12 @@ single_step_dense_tst    : 3.2438
  &#39;outputs/model/single_step_dense/saved_model.pb&#39;,
  &#39;outputs/model/single_step_dense/variables/variables.data-00000-of-00001&#39;,
  &#39;outputs/model/single_step_dense/variables/variables.index&#39;,
- &#39;performance_mae_1617218715.png&#39;]</pre>
+ &#39;performance_mae_1617233696.png&#39;,
+ &#39;single_step_dense_pred_1617233681.png&#39;]</pre>
 </div>
 
 </div>
 
-</div>
-</div>
-
-</div>
-    
-
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from azureml.tensorboard import Tensorboard</span>
-
-<span class="c1"># tb = Tensorboard([run])</span>
-<span class="c1"># tb.start()</span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 
@@ -1867,6 +1888,43 @@ single_step_dense_tst    : 3.2438
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>starting compute cleanup
 deleting aml-compute instance
+deleting ks-nb instance
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
+Current provisioning state of AmlCompute is &#34;Deleting&#34;
+
 Current provisioning state of AmlCompute is &#34;Deleting&#34;
 
 Current provisioning state of AmlCompute is &#34;Deleting&#34;
