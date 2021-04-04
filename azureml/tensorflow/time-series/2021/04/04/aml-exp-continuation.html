@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Azure ML Workspace - [Tensorflow] Time Series Example Continuation 1 | The Misadventures of Kevin</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Azure ML Workspace - [Tensorflow] Time Series Example Continuation 1" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A chronicle of the random thoughts and adventures of Kevin" />
+<meta property="og:description" content="A chronicle of the random thoughts and adventures of Kevin" />
+<link rel="canonical" href="https://kslader8.github.io/kslader8-thoughts/azureml/tensorflow/time-series/2021/04/04/aml-exp-continuation.html" />
+<meta property="og:url" content="https://kslader8.github.io/kslader8-thoughts/azureml/tensorflow/time-series/2021/04/04/aml-exp-continuation.html" />
+<meta property="og:site_name" content="The Misadventures of Kevin" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-04-04T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://kslader8.github.io/kslader8-thoughts/azureml/tensorflow/time-series/2021/04/04/aml-exp-continuation.html","@type":"BlogPosting","headline":"Azure ML Workspace - [Tensorflow] Time Series Example Continuation 1","dateModified":"2021-04-04T00:00:00-05:00","datePublished":"2021-04-04T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kslader8.github.io/kslader8-thoughts/azureml/tensorflow/time-series/2021/04/04/aml-exp-continuation.html"},"description":"A chronicle of the random thoughts and adventures of Kevin","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/kslader8-thoughts/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://kslader8.github.io/kslader8-thoughts/feed.xml" title="The Misadventures of Kevin" /><link rel="shortcut icon" type="image/x-icon" href="/kslader8-thoughts/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/kslader8-thoughts/">The Misadventures of Kevin</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/kslader8-thoughts/about/">About Me</a><a class="page-link" href="/kslader8-thoughts/search/">Search</a><a class="page-link" href="/kslader8-thoughts/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Azure ML Workspace - [Tensorflow] Time Series Example | Continuation 1</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-04-04T00:00:00-05:00" itemprop="datePublished">
+        Apr 4, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      13 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/kslader8-thoughts/categories/#azureml">azureml</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/kslader8-thoughts/categories/#tensorflow">tensorflow</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/kslader8-thoughts/categories/#time-series">time-series</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/kslader8/kslader8-thoughts/tree/master/_notebooks/2021-04-04-aml-exp-continuation.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/kslader8-thoughts/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/kslader8/kslader8-thoughts/master?filepath=_notebooks%2F2021-04-04-aml-exp-continuation.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/kslader8-thoughts/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/kslader8/kslader8-thoughts/blob/master/_notebooks/2021-04-04-aml-exp-continuation.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/kslader8-thoughts/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-04-04-aml-exp-continuation.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This notebook is the same as the previous notebook. The goals is simply to update it to make a few enhancements that became apparent during the process of making the first notebook.</p>
+<p><strong>Enhancements</strong></p>
+<ul>
+<li>Start using the pipeline api</li>
+<li>Adding plots for all models</li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+<li>Normalizing input data</li>
+<li>Increasing the test data set for lstm testing &amp; performance plot</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Notebook-Setup">Notebook Setup<a class="anchor-link" href="#Notebook-Setup"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Libraries">Libraries<a class="anchor-link" href="#Libraries"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span> 
+
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># import tensorflow as tf</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pandas version </span><span class="si">{</span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;numpy version </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># print(f&quot;tensorflow version {tf.__version__}&quot;)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>pandas version 1.2.0
+numpy version 1.18.5
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">azureml.core</span> <span class="k">as</span> <span class="nn">aml</span>
+
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Workspace</span><span class="p">,</span> <span class="n">ScriptRunConfig</span><span class="p">,</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">Experiment</span><span class="p">,</span> <span class="n">Run</span>
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Datastore</span><span class="p">,</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">azureml.core.compute</span> <span class="kn">import</span> <span class="n">ComputeTarget</span><span class="p">,</span> <span class="n">AmlCompute</span>
+
+<span class="kn">from</span> <span class="nn">azureml.core.runconfig</span> <span class="kn">import</span> <span class="n">RunConfiguration</span>
+<span class="kn">from</span> <span class="nn">azureml.core.conda_dependencies</span> <span class="kn">import</span> <span class="n">CondaDependencies</span>
+
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">azureml.core.resource_configuration</span> <span class="kn">import</span> <span class="n">ResourceConfiguration</span>
+
+
+<span class="kn">from</span> <span class="nn">azureml.pipeline.core</span> <span class="kn">import</span> <span class="n">Pipeline</span><span class="p">,</span> <span class="n">PipelineParameter</span>
+<span class="kn">from</span> <span class="nn">azureml.pipeline.steps</span> <span class="kn">import</span> <span class="n">PythonScriptStep</span>
+
+
+<span class="kn">from</span> <span class="nn">azureml.widgets</span> <span class="kn">import</span> <span class="n">RunDetails</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;azureml version </span><span class="si">{</span><span class="n">aml</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>azureml version 1.25.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tensorboard</span>
+
+<span class="kn">from</span> <span class="nn">azureml.tensorboard</span> <span class="kn">import</span> <span class="n">Tensorboard</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tensorboard version </span><span class="si">{</span><span class="n">tensorboard</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>tensorboard version 2.4.1
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">twelvedata</span>
+<span class="kn">from</span> <span class="nn">twelvedata</span> <span class="kn">import</span> <span class="n">TDClient</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;twelvedata version </span><span class="si">{</span><span class="n">twelvedata</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>twelvedata version 1.1.7
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Project-Environment-Variables">Project Environment Variables<a class="anchor-link" href="#Project-Environment-Variables"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is a personal preference of mine to make a .env file per project to encapsulate tokens/secrets/etc outside of notebooks.</p>
+<p>In this case I created a file named .env with a single variable apikey=(api key) in the same directory as my experiment.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">env_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;.env&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">env_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">load_dotenv</span><span class="p">(</span><span class="n">env_path</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Matplotlib">Matplotlib<a class="anchor-link" href="#Matplotlib"> </a></h3><p>It's useful to set a few global plotting defaults to save from doing them for every plot in a notebook</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.grid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Azure-ML-Workspace">Azure ML Workspace<a class="anchor-link" href="#Azure-ML-Workspace"> </a></h3><p>To setup an Azure ML Workspace you will need an azure account (with credit card). To spin it up simply go to <a href="https://portal.azure.com/">https://portal.azure.com/</a> and type machine learning in the search bar and create a workspace.</p>
+<p>Once you have a workspace you will need to download the config.json prior to going to <a href="https://ml.azure.com/">https://ml.azure.com/</a> to access your workspace</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">workspace_config_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;config.json&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">workspace_config_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">Workspace</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">workspace_config_path</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Twelve-Data-Client">Twelve Data Client<a class="anchor-link" href="#Twelve-Data-Client"> </a></h3><p>I setup an account at <a href="https://twelvedata.com/">https://twelvedata.com/</a> to get a free api key to try it out. I had not heard of it before, but it was the first thing that came up in my google search for free market data...</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">apikey</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;apikey&quot;</span><span class="p">)</span>
+<span class="n">td</span> <span class="o">=</span> <span class="n">TDClient</span><span class="p">(</span><span class="n">apikey</span><span class="o">=</span><span class="n">apikey</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="ML-Workspace-Compute">ML Workspace Compute<a class="anchor-link" href="#ML-Workspace-Compute"> </a></h2><h3 id="Get-existing-compute-cluster-or-create-one">Get existing compute cluster or create one<a class="anchor-link" href="#Get-existing-compute-cluster-or-create-one"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">compute_name</span> <span class="o">=</span> <span class="s2">&quot;aml-compute&quot;</span>
+<span class="n">vm_size</span> <span class="o">=</span> <span class="s2">&quot;Standard_NC6&quot;</span>
+<span class="c1"># vm_size = &quot;Standard_NC6s_v3&quot;</span>
+
+<span class="k">if</span> <span class="n">compute_name</span> <span class="ow">in</span> <span class="n">ws</span><span class="o">.</span><span class="n">compute_targets</span><span class="p">:</span>
+    <span class="n">compute_target</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">compute_targets</span><span class="p">[</span><span class="n">compute_name</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">compute_target</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">compute_target</span><span class="p">)</span> <span class="ow">is</span> <span class="n">AmlCompute</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Found compute target: &#39;</span> <span class="o">+</span> <span class="n">compute_name</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creating a new compute target...&#39;</span><span class="p">)</span>
+    <span class="n">provisioning_config</span> <span class="o">=</span> <span class="n">AmlCompute</span><span class="o">.</span><span class="n">provisioning_configuration</span><span class="p">(</span><span class="n">vm_size</span><span class="o">=</span><span class="n">vm_size</span><span class="p">,</span>  <span class="c1"># STANDARD_NC6 is GPU-enabled</span>
+                                                                <span class="n">min_nodes</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                                                <span class="n">max_nodes</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="c1"># create the compute target</span>
+    <span class="n">compute_target</span> <span class="o">=</span> <span class="n">ComputeTarget</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">ws</span><span class="p">,</span> <span class="n">compute_name</span><span class="p">,</span> <span class="n">provisioning_config</span><span class="p">)</span>
+
+    <span class="c1"># Can poll for a minimum number of nodes and for a specific timeout.</span>
+    <span class="c1"># If no min node count is provided it will use the scale settings for the cluster</span>
+    <span class="n">compute_target</span><span class="o">.</span><span class="n">wait_for_completion</span><span class="p">(</span>
+        <span class="n">show_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_node_count</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout_in_minutes</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+    <span class="c1"># For a more detailed view of current cluster status, use the &#39;status&#39; property</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">compute_target</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Creating a new compute target...
+Creating....
+SucceededProvisioning operation finished, operation &#34;Succeeded&#34;
+Succeeded
+AmlCompute wait for completion finished
+
+Minimum number of nodes requested have been provisioned
+{&#39;currentNodeCount&#39;: 0, &#39;targetNodeCount&#39;: 0, &#39;nodeStateCounts&#39;: {&#39;preparingNodeCount&#39;: 0, &#39;runningNodeCount&#39;: 0, &#39;idleNodeCount&#39;: 0, &#39;unusableNodeCount&#39;: 0, &#39;leavingNodeCount&#39;: 0, &#39;preemptedNodeCount&#39;: 0}, &#39;allocationState&#39;: &#39;Steady&#39;, &#39;allocationStateTransitionTime&#39;: &#39;2021-04-02T20:04:47.531000+00:00&#39;, &#39;errors&#39;: None, &#39;creationTime&#39;: &#39;2021-04-02T20:04:42.205768+00:00&#39;, &#39;modifiedTime&#39;: &#39;2021-04-02T20:04:59.941680+00:00&#39;, &#39;provisioningState&#39;: &#39;Succeeded&#39;, &#39;provisioningStateTransitionTime&#39;: None, &#39;scaleSettings&#39;: {&#39;minNodeCount&#39;: 0, &#39;maxNodeCount&#39;: 4, &#39;nodeIdleTimeBeforeScaleDown&#39;: &#39;PT120S&#39;}, &#39;vmPriority&#39;: &#39;Dedicated&#39;, &#39;vmSize&#39;: &#39;STANDARD_NC6&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="ML-Workspace-Data">ML Workspace Data<a class="anchor-link" href="#ML-Workspace-Data"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="TwelveData">TwelveData<a class="anchor-link" href="#TwelveData"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="List-ETFs-Available">List ETFs Available<a class="anchor-link" href="#List-ETFs-Available"> </a></h4>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">etf_data</span> <span class="o">=</span> <span class="n">td</span><span class="o">.</span><span class="n">get_etf_list</span><span class="p">()</span>
+<span class="n">etf_list</span> <span class="o">=</span> <span class="n">etf_data</span><span class="o">.</span><span class="n">as_json</span><span class="p">()</span>
+<span class="n">etf_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">etf_list</span><span class="p">)</span>
+<span class="n">etf_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>symbol</th>
+      <th>name</th>
+      <th>currency</th>
+      <th>exchange</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>8PSG</td>
+      <td>Invesco Physical Gold ETC</td>
+      <td>EUR</td>
+      <td>XETR</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AAA</td>
+      <td>BetaShares Australian High Interest Cash ETF</td>
+      <td>AUD</td>
+      <td>ASX</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AAAU</td>
+      <td>Perth Mint Physical Gold ETF</td>
+      <td>USD</td>
+      <td>NYSE</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AADR</td>
+      <td>AdvisorShares Dorsey Wright ADR ETF</td>
+      <td>USD</td>
+      <td>NYSE</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AASF</td>
+      <td>Airlie Australian Share Fund -- ETF Feeder</td>
+      <td>AUD</td>
+      <td>ASX</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Get-ETF-Time-Series">Get ETF Time Series<a class="anchor-link" href="#Get-ETF-Time-Series"> </a></h4>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">end_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">())</span>
+<span class="n">start_date</span> <span class="o">=</span> <span class="n">end_date</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">tseries</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">BDay</span><span class="p">(</span><span class="mi">252</span><span class="p">)</span>
+
+<span class="n">start_date</span><span class="o">.</span><span class="n">to_pydatetime</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span> <span class="n">end_date</span><span class="o">.</span><span class="n">to_pydatetime</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(datetime.date(2020, 4, 15), datetime.date(2021, 4, 2))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ticker</span> <span class="o">=</span> <span class="s2">&quot;VOO&quot;</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">td</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span>
+    <span class="n">symbol</span><span class="o">=</span><span class="n">ticker</span><span class="p">,</span> 
+    <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;1day&quot;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span>
+    <span class="n">outputsize</span><span class="o">=</span><span class="mi">300</span>
+<span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">with_ema</span><span class="p">()</span><span class="o">.</span><span class="n">as_pandas</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>open</th>
+      <th>high</th>
+      <th>low</th>
+      <th>close</th>
+      <th>volume</th>
+      <th>ema</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>240.000000</td>
+      <td>240.000000</td>
+      <td>240.000000</td>
+      <td>240.000000</td>
+      <td>2.400000e+02</td>
+      <td>240.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>316.532337</td>
+      <td>318.708476</td>
+      <td>314.401410</td>
+      <td>316.757663</td>
+      <td>3.385244e+06</td>
+      <td>314.852005</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>30.684477</td>
+      <td>30.533911</td>
+      <td>30.831302</td>
+      <td>30.738751</td>
+      <td>1.376637e+06</td>
+      <td>30.938463</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>250.960010</td>
+      <td>255.490010</td>
+      <td>250.000000</td>
+      <td>250.960010</td>
+      <td>7.530980e+05</td>
+      <td>250.599230</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>294.715005</td>
+      <td>296.435857</td>
+      <td>293.557575</td>
+      <td>295.067500</td>
+      <td>2.356972e+06</td>
+      <td>291.208500</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>314.860000</td>
+      <td>317.341200</td>
+      <td>313.375000</td>
+      <td>315.255005</td>
+      <td>3.077382e+06</td>
+      <td>313.968755</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>342.612498</td>
+      <td>345.372500</td>
+      <td>340.907497</td>
+      <td>342.372490</td>
+      <td>4.080284e+06</td>
+      <td>340.965635</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>366.205990</td>
+      <td>368.290010</td>
+      <td>366.030000</td>
+      <td>368.160000</td>
+      <td>8.397805e+06</td>
+      <td>363.463540</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>datetime</th>
+      <th>open</th>
+      <th>high</th>
+      <th>low</th>
+      <th>close</th>
+      <th>volume</th>
+      <th>ema</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-04-01</td>
+      <td>366.20599</td>
+      <td>368.29001</td>
+      <td>366.03000</td>
+      <td>368.16000</td>
+      <td>4591212</td>
+      <td>363.46354</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-03-31</td>
+      <td>362.85999</td>
+      <td>365.82001</td>
+      <td>362.85999</td>
+      <td>364.29001</td>
+      <td>4870674</td>
+      <td>362.28942</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-03-30</td>
+      <td>363.79001</td>
+      <td>363.79001</td>
+      <td>361.28500</td>
+      <td>363.00000</td>
+      <td>3637520</td>
+      <td>361.78927</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-03-29</td>
+      <td>362.66000</td>
+      <td>364.67001</td>
+      <td>361.10971</td>
+      <td>363.79001</td>
+      <td>3062900</td>
+      <td>361.48659</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-03-26</td>
+      <td>359.42999</td>
+      <td>364.35001</td>
+      <td>358.75000</td>
+      <td>363.95999</td>
+      <td>3212525</td>
+      <td>360.91074</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Azure">Azure<a class="anchor-link" href="#Azure"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Azure-Workspace-Datastore">Azure Workspace Datastore<a class="anchor-link" href="#Azure-Workspace-Datastore"> </a></h4>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_store</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">get_default_datastore</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Upload-ETF-Dataset">Upload ETF Dataset<a class="anchor-link" href="#Upload-ETF-Dataset"> </a></h4>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_or_upload_df</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">data_store</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">ticker</span><span class="p">):</span>
+    
+    <span class="n">dataset_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ticker</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">_ds&#39;</span>
+    <span class="k">try</span><span class="p">:</span> 
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">get_by_name</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">dataset_name</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">to_pandas_dataframe</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">Dataset</span><span class="o">.</span><span class="n">Tabular</span><span class="o">.</span><span class="n">register_pandas_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">data_store</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">get_by_name</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">dataset_name</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">to_pandas_dataframe</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+    
+
+<span class="n">aml_df</span> <span class="o">=</span> <span class="n">get_or_upload_df</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">data_store</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">ticker</span><span class="p">)</span>
+<span class="n">aml_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>datetime</th>
+      <th>open</th>
+      <th>high</th>
+      <th>low</th>
+      <th>close</th>
+      <th>volume</th>
+      <th>ema</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-03-26 04:00:00</td>
+      <td>359.42999</td>
+      <td>364.35001</td>
+      <td>358.75000</td>
+      <td>363.95999</td>
+      <td>3212525</td>
+      <td>360.91074</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-03-25 04:00:00</td>
+      <td>357.42001</td>
+      <td>360.23999</td>
+      <td>354.14001</td>
+      <td>359.47000</td>
+      <td>5361270</td>
+      <td>360.14842</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-03-24 04:00:00</td>
+      <td>360.70999</td>
+      <td>362.26999</td>
+      <td>357.44000</td>
+      <td>357.57999</td>
+      <td>3989728</td>
+      <td>360.31803</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-03-23 04:00:00</td>
+      <td>359.79501</td>
+      <td>362.51001</td>
+      <td>359.79501</td>
+      <td>362.32001</td>
+      <td>1208455</td>
+      <td>361.00254</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-03-22 04:00:00</td>
+      <td>359.88000</td>
+      <td>363.50000</td>
+      <td>359.76999</td>
+      <td>362.10999</td>
+      <td>3320390</td>
+      <td>360.67317</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Training">Training<a class="anchor-link" href="#Training"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Create-Training-Script">Create Training Script<a class="anchor-link" href="#Create-Training-Script"> </a></h4>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">src_dir</span> <span class="o">=</span> <span class="s1">&#39;aml-exp&#39;</span>
+<span class="n">aml_exp</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">src_dir</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">aml_exp</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span> <span class="n">aml_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%writefile</span> aml-exp/train.py
+
+<span class="c1"># Standard Libraries</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+
+<span class="c1"># 3rd Party Libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Run</span>
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Model</span>
+
+<span class="kn">from</span> <span class="nn">azureml.tensorboard.export</span> <span class="kn">import</span> <span class="n">export_to_tensorboard</span>
+<span class="kn">from</span> <span class="nn">azureml.interpret</span> <span class="kn">import</span> <span class="n">ExplanationClient</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+
+<span class="c1"># Classes </span>
+<span class="k">class</span> <span class="nc">WindowGenerator</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_width</span><span class="p">,</span> <span class="n">label_width</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span>
+               <span class="n">train_df</span><span class="p">,</span> <span class="n">val_df</span><span class="p">,</span> <span class="n">test_df</span><span class="p">,</span>
+               <span class="n">label_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Store the raw data.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_df</span> <span class="o">=</span> <span class="n">train_df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_df</span> <span class="o">=</span> <span class="n">val_df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_df</span> <span class="o">=</span> <span class="n">test_df</span>
+
+        <span class="c1"># Work out the label column indices.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_columns</span> <span class="o">=</span> <span class="n">label_columns</span>
+        <span class="k">if</span> <span class="n">label_columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label_columns_indices</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span>
+                                        <span class="nb">enumerate</span><span class="p">(</span><span class="n">label_columns</span><span class="p">)}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column_indices</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span>
+                               <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)}</span>
+
+        <span class="c1"># Work out the window parameters.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_width</span> <span class="o">=</span> <span class="n">input_width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_width</span> <span class="o">=</span> <span class="n">label_width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shift</span> <span class="o">=</span> <span class="n">shift</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_window_size</span> <span class="o">=</span> <span class="n">input_width</span> <span class="o">+</span> <span class="n">shift</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">input_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_window_size</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">input_slice</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_window_size</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_start</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_window_size</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">labels_slice</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+            <span class="sa">f</span><span class="s1">&#39;Total window size: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_window_size</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;Input indices: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_indices</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;Label indices: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label_indices</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;Label column name(s): </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label_columns</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_df</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">val</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_df</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_df</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get and cache an example batch of `inputs, labels` for plotting.&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_example&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># No example batch was found, so get one from the `.train` dataset</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="p">))</span>
+            <span class="c1"># And cache it for next time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_example</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">result</span>
+    
+    <span class="k">def</span> <span class="nf">split_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">features</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_slice</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">features</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels_slice</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">labels</span><span class="p">[:,</span> <span class="p">:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_indices</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_columns</span><span class="p">],</span>
+                <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Slicing doesn&#39;t preserve static shape information, so set the shapes</span>
+        <span class="c1"># manually. This way the `tf.data.Datasets` are easier to inspect.</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">set_shape</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_width</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">set_shape</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_width</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span>
+    
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_col</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_subplots</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+        <span class="n">plot_col_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_indices</span><span class="p">[</span><span class="n">plot_col</span><span class="p">]</span>
+        <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">example</span>
+        <span class="n">max_n</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_subplots</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_n</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">max_n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">plot_col</span><span class="si">}</span><span class="s1"> [normed]&#39;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_indices</span><span class="p">,</span> <span class="n">inputs</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:,</span> <span class="n">plot_col_index</span><span class="p">],</span>
+                     <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inputs&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">10</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_columns</span><span class="p">:</span>
+                <span class="n">label_col_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_columns_indices</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plot_col</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">label_col_index</span> <span class="o">=</span> <span class="n">plot_col_index</span>
+
+            <span class="k">if</span> <span class="n">label_col_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_indices</span><span class="p">,</span> <span class="n">labels</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:,</span> <span class="n">label_col_index</span><span class="p">],</span>
+                <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Labels&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;#2ca02c&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_indices</span><span class="p">,</span> <span class="n">predictions</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:,</span> <span class="n">label_col_index</span><span class="p">],</span>
+                          <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Predictions&#39;</span><span class="p">,</span>
+                          <span class="n">c</span><span class="o">=</span><span class="s1">&#39;#ff7f0e&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+        
+        
+    <span class="k">def</span> <span class="nf">make_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">timeseries_dataset_from_array</span><span class="p">(</span>
+          <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+          <span class="n">targets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+          <span class="n">sequence_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total_window_size</span><span class="p">,</span>
+          <span class="n">sequence_stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+          <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+          <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,)</span>
+
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">split_window</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ds</span>
+
+<span class="k">class</span> <span class="nc">Baseline</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_index</span> <span class="o">=</span> <span class="n">label_index</span>
+
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">inputs</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">tf</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    
+<span class="c1"># Global Variables</span>
+<span class="n">MAX_EPOCHS</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">CONV_WIDTH</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># Read in Args</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--dataset_name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;dataset_name&#39;</span><span class="p">)</span>
+
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+
+<span class="c1"># Paths</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;./outputs&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;./outputs/model&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;./outputs/log&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<span class="c1"># ML Run</span>
+<span class="n">run</span> <span class="o">=</span> <span class="n">Run</span><span class="o">.</span><span class="n">get_context</span><span class="p">()</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">workspace</span>
+
+
+<span class="c1"># ML Dataset</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">get_by_name</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dataset_name</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">to_pandas_dataframe</span><span class="p">()</span>
+
+
+<span class="c1"># Date Feature Prep</span>
+<span class="n">day</span> <span class="o">=</span> <span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span>
+<span class="n">year</span> <span class="o">=</span> <span class="p">(</span><span class="mf">365.2425</span><span class="p">)</span><span class="o">*</span><span class="n">day</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+<span class="n">timestamp_s</span> <span class="o">=</span> <span class="n">date_time</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">)</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;day_sin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">timestamp_s</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">day</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;day_cos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">timestamp_s</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">day</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;year_sin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">timestamp_s</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">year</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;year_cos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">timestamp_s</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">year</span><span class="p">))</span>
+
+
+<span class="c1"># Data Filter</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;day_sin&#39;</span><span class="p">,</span> <span class="s1">&#39;day_cos&#39;</span><span class="p">,</span> <span class="s1">&#39;ema&#39;</span><span class="p">]</span>
+<span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;close&#39;</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="n">features</span> <span class="o">+</span> <span class="p">[</span><span class="n">target</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span>
+
+<span class="c1"># Data Splitting</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">train_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="mf">0.6</span><span class="p">)]</span>
+<span class="n">val_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="mf">0.6</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="mf">0.8</span><span class="p">)]</span>
+<span class="n">test_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="mf">0.8</span><span class="p">):]</span>
+
+
+<span class="c1"># Data Normalization</span>
+<span class="n">train_mean</span> <span class="o">=</span> <span class="n">train_df</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">train_std</span> <span class="o">=</span> <span class="n">train_df</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="n">train_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">train_df</span> <span class="o">-</span> <span class="n">train_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">train_std</span>
+<span class="n">val_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">val_df</span> <span class="o">-</span> <span class="n">train_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">train_std</span>
+<span class="n">test_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">test_df</span> <span class="o">-</span> <span class="n">train_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">train_std</span>
+
+
+<span class="c1"># Data Distribution Check</span>
+<span class="n">df_std</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span> <span class="o">-</span> <span class="n">train_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">train_std</span>
+<span class="n">df_std</span> <span class="o">=</span> <span class="n">df_std</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;Column&#39;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s1">&#39;Normalized&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Column&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Normalized&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_std</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;feature_distribution_check&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
+
+
+<span class="c1"># Data Windows</span>
+<span class="n">single_step_window</span> <span class="o">=</span> <span class="n">WindowGenerator</span><span class="p">(</span>
+    <span class="n">input_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">train_df</span><span class="o">=</span><span class="n">train_df</span><span class="p">,</span> <span class="n">val_df</span><span class="o">=</span><span class="n">val_df</span><span class="p">,</span> <span class="n">test_df</span><span class="o">=</span><span class="n">test_df</span><span class="p">,</span>
+    <span class="n">label_columns</span><span class="o">=</span><span class="p">[</span><span class="n">target</span><span class="p">])</span>
+<span class="n">wide_window</span> <span class="o">=</span> <span class="n">WindowGenerator</span><span class="p">(</span>
+    <span class="n">input_width</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">label_width</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">train_df</span><span class="o">=</span><span class="n">train_df</span><span class="p">,</span> <span class="n">val_df</span><span class="o">=</span><span class="n">val_df</span><span class="p">,</span> <span class="n">test_df</span><span class="o">=</span><span class="n">test_df</span><span class="p">,</span>
+    <span class="n">label_columns</span><span class="o">=</span><span class="p">[</span><span class="n">target</span><span class="p">])</span>
+<span class="n">conv_window</span> <span class="o">=</span> <span class="n">WindowGenerator</span><span class="p">(</span>
+    <span class="n">input_width</span><span class="o">=</span><span class="n">CONV_WIDTH</span><span class="p">,</span>
+    <span class="n">label_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">train_df</span><span class="o">=</span><span class="n">train_df</span><span class="p">,</span> <span class="n">val_df</span><span class="o">=</span><span class="n">val_df</span><span class="p">,</span> <span class="n">test_df</span><span class="o">=</span><span class="n">test_df</span><span class="p">,</span>
+    <span class="n">label_columns</span><span class="o">=</span><span class="p">[</span><span class="n">target</span><span class="p">])</span>
+<span class="n">wide_conv_window</span> <span class="o">=</span> <span class="n">WindowGenerator</span><span class="p">(</span>
+    <span class="n">input_width</span><span class="o">=</span><span class="mi">24</span> <span class="o">+</span> <span class="n">CONV_WIDTH</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">label_width</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">train_df</span><span class="o">=</span><span class="n">train_df</span><span class="p">,</span> <span class="n">val_df</span><span class="o">=</span><span class="n">val_df</span><span class="p">,</span> <span class="n">test_df</span><span class="o">=</span><span class="n">test_df</span><span class="p">,</span>
+    <span class="n">label_columns</span><span class="o">=</span><span class="p">[</span><span class="n">target</span><span class="p">])</span>
+
+
+<span class="c1"># Train Baseline</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">Baseline</span><span class="p">(</span><span class="n">label_index</span><span class="o">=</span><span class="n">single_step_window</span><span class="o">.</span><span class="n">column_indices</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">MeanSquaredError</span><span class="p">(),</span>
+                 <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">MeanAbsoluteError</span><span class="p">()])</span>
+
+<span class="n">val_performance</span><span class="p">,</span> <span class="n">tst_performance</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+<span class="n">val_performance</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">single_step_window</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="n">tst_performance</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">single_step_window</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">wide_window</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">baseline</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;baseline_pred&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
+
+<span class="c1"># Train Models</span>
+<span class="k">def</span> <span class="nf">compile_and_fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">early_stopping</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">EarlyStopping</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_loss&#39;</span><span class="p">,</span>
+                                                    <span class="n">patience</span><span class="o">=</span><span class="n">patience</span><span class="p">,</span>
+                                                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">)</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">MeanSquaredError</span><span class="p">(),</span>
+                <span class="n">optimizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(),</span>
+                <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">MeanAbsoluteError</span><span class="p">()])</span>
+
+    <span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">window</span><span class="o">.</span><span class="n">train</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">MAX_EPOCHS</span><span class="p">,</span>
+                      <span class="n">validation_data</span><span class="o">=</span><span class="n">window</span><span class="o">.</span><span class="n">val</span><span class="p">,</span>
+                      <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stopping</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">history</span>
+
+<span class="c1"># Train Linear Model</span>
+<span class="n">linear</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">])</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">compile_and_fit</span><span class="p">(</span><span class="n">linear</span><span class="p">,</span> <span class="n">single_step_window</span><span class="p">)</span>
+
+<span class="n">val_performance</span><span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">linear</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">single_step_window</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="n">tst_performance</span><span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">linear</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">single_step_window</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">saved_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">linear</span><span class="p">,</span> <span class="s1">&#39;./outputs/model/linear&#39;</span><span class="p">)</span>
+
+<span class="n">fig1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig1</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)),</span>
+        <span class="n">height</span><span class="o">=</span><span class="n">linear</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">kernel</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)))</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">train_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;linear_coef&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
+
+<span class="n">wide_window</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">linear</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;linear_pred&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
+
+<span class="c1"># Train Single Step Dense Model</span>
+<span class="n">single_step_dense</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">])</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">compile_and_fit</span><span class="p">(</span><span class="n">single_step_dense</span><span class="p">,</span> <span class="n">single_step_window</span><span class="p">)</span>
+
+<span class="n">val_performance</span><span class="p">[</span><span class="s1">&#39;single_step_dense&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">single_step_dense</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">single_step_window</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="n">tst_performance</span><span class="p">[</span><span class="s1">&#39;single_step_dense&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">single_step_dense</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">single_step_window</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">saved_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">single_step_dense</span><span class="p">,</span> <span class="s1">&#39;./outputs/model/single_step_dense&#39;</span><span class="p">)</span>
+
+<span class="n">wide_window</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">single_step_dense</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;single_step_dense_pred&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
+
+<span class="c1"># Train Multi Step Dense Model</span>
+<span class="n">multi_step_dense</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="c1"># Shape: (time, features) =&gt; (time*features)</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="c1"># Add back the time dimension.</span>
+    <span class="c1"># Shape: (outputs) =&gt; (1, outputs)</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+<span class="p">])</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">compile_and_fit</span><span class="p">(</span><span class="n">multi_step_dense</span><span class="p">,</span> <span class="n">conv_window</span><span class="p">)</span>
+
+<span class="n">val_performance</span><span class="p">[</span><span class="s1">&#39;multi_step_dense&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">multi_step_dense</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">conv_window</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="n">tst_performance</span><span class="p">[</span><span class="s1">&#39;multi_step_dense&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">multi_step_dense</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">conv_window</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">saved_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">multi_step_dense</span><span class="p">,</span> <span class="s1">&#39;./outputs/model/multi_step_dense&#39;</span><span class="p">)</span>
+
+<span class="n">conv_window</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">multi_step_dense</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;multi_step_dense_pred&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
+
+<span class="c1"># Train Conv Model</span>
+<span class="n">conv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+                           <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="n">CONV_WIDTH</span><span class="p">,),</span>
+                           <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">compile_and_fit</span><span class="p">(</span><span class="n">conv</span><span class="p">,</span> <span class="n">conv_window</span><span class="p">)</span>
+<span class="c1"># TODO - log training epoch history to tesnorboard</span>
+
+<span class="n">val_performance</span><span class="p">[</span><span class="s1">&#39;conv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conv</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">conv_window</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="n">tst_performance</span><span class="p">[</span><span class="s1">&#39;conv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conv</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">conv_window</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">saved_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">conv</span><span class="p">,</span> <span class="s1">&#39;./outputs/model/conv&#39;</span><span class="p">)</span>
+
+<span class="n">wide_conv_window</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">conv</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;conv_pred&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
+
+<span class="c1"># Train LSTM Model</span>
+<span class="n">lstm</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="c1"># Shape [batch, time, features] =&gt; [batch, time, lstm_units]</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="c1"># Shape =&gt; [batch, time, features]</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">])</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">compile_and_fit</span><span class="p">(</span><span class="n">lstm</span><span class="p">,</span> <span class="n">wide_window</span><span class="p">)</span>
+
+<span class="n">val_performance</span><span class="p">[</span><span class="s1">&#39;lstm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lstm</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">wide_window</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="n">tst_performance</span><span class="p">[</span><span class="s1">&#39;lstm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lstm</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">wide_window</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">saved_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">lstm</span><span class="p">,</span> <span class="s1">&#39;./outputs/model/lstm&#39;</span><span class="p">)</span>
+
+<span class="n">wide_window</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">lstm</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;lstm_pred&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
+
+<span class="c1"># Performance</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">val_performance</span><span class="p">))</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mf">0.3</span>
+
+<span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;mean_absolute_error&#39;</span>
+<span class="n">metric_index</span> <span class="o">=</span> <span class="n">lstm</span><span class="o">.</span><span class="n">metrics_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;mean_absolute_error&#39;</span><span class="p">)</span>
+<span class="n">val_mae</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="n">metric_index</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val_performance</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+<span class="n">test_mae</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="n">metric_index</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tst_performance</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+
+<span class="n">fig2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig2</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">val_mae</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation&#39;</span><span class="p">)</span>
+<span class="n">b2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">test_mae</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">val_mae</span><span class="p">)))</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">val_performance</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log_image</span><span class="p">(</span><span class="s1">&#39;performance_mae&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">plt</span><span class="p">)</span>
+
+
+<span class="c1"># Log Results &amp; Select Best Model</span>
+<span class="n">best_model</span><span class="p">,</span> <span class="n">best_score</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+<span class="k">if</span> <span class="n">run</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val_performance</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">log_list</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;val_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tst_performance</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">log_list</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;tst_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mae</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>    
+            <span class="k">if</span> <span class="n">best_score</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">best_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+                <span class="n">best_model</span> <span class="o">=</span> <span class="n">k</span>
+                <span class="n">best_score</span> <span class="o">=</span> <span class="n">mae</span>
+            <span class="k">elif</span> <span class="n">best_score</span> <span class="o">&gt;</span> <span class="n">mae</span><span class="p">:</span>
+                <span class="n">best_model</span> <span class="o">=</span> <span class="n">k</span>
+                <span class="n">best_score</span> <span class="o">=</span> <span class="n">mae</span>   
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+    <span class="n">run</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;best_model&#39;</span><span class="p">,</span> <span class="n">best_model</span><span class="p">)</span>
+    <span class="n">run</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;best_score&#39;</span><span class="p">,</span> <span class="n">best_score</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">best_model</span> <span class="o">!=</span> <span class="s2">&quot;baseline&quot;</span><span class="p">:</span> <span class="n">model</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">register_model</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">best_model</span><span class="p">,</span> <span class="n">model_path</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;outputs/model/</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Overwriting aml-exp/train.py
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Setup-Training-Environment">Setup Training Environment<a class="anchor-link" href="#Setup-Training-Environment"> </a></h4>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">aml_run_config</span> <span class="o">=</span> <span class="n">RunConfiguration</span><span class="p">()</span>
+<span class="n">aml_run_config</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">compute_target</span>
+
+<span class="n">aml_run_config</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">user_managed_dependencies</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Add some packages relied on by data prep step</span>
+<span class="n">deps</span> <span class="o">=</span> <span class="n">CondaDependencies</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">conda_packages</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pandas&#39;</span><span class="p">,</span><span class="s1">&#39;scikit-learn&#39;</span><span class="p">,</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">,</span> <span class="s1">&#39;seaborn&#39;</span><span class="p">],</span> 
+    <span class="n">pip_packages</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;azureml-sdk&#39;</span><span class="p">,</span> <span class="s1">&#39;azureml-dataprep[fuse,pandas]&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;azureml-pipeline&#39;</span><span class="p">,</span> <span class="s1">&#39;azureml.tensorboard&#39;</span><span class="p">,</span> <span class="s1">&#39;azureml-interpret&#39;</span><span class="p">],</span> 
+    <span class="n">python_version</span><span class="o">=</span><span class="s1">&#39;3.6.2&#39;</span><span class="p">,</span>
+    <span class="n">pin_sdk_version</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">deps</span><span class="o">.</span><span class="n">add_tensorflow_pip_package</span><span class="p">(</span><span class="n">core_type</span><span class="o">=</span><span class="s1">&#39;gpu&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2.3.1&#39;</span><span class="p">)</span>
+<span class="n">aml_run_config</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">conda_dependencies</span> <span class="o">=</span> <span class="n">deps</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Build-Train-Step">Build Train Step<a class="anchor-link" href="#Build-Train-Step"> </a></h4>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">step1</span> <span class="o">=</span> <span class="n">PythonScriptStep</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;train_step&quot;</span><span class="p">,</span>
+                         <span class="n">source_directory</span><span class="o">=</span><span class="n">src_dir</span><span class="p">,</span>
+                         <span class="n">script_name</span><span class="o">=</span><span class="s2">&quot;train.py&quot;</span><span class="p">,</span> 
+                         <span class="n">arguments</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;--dataset_name&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ticker</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">_ds&#39;</span><span class="p">],</span>
+                         <span class="n">runconfig</span><span class="o">=</span><span class="n">aml_run_config</span><span class="p">,</span> 
+                         <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Build-Pipeline">Build Pipeline<a class="anchor-link" href="#Build-Pipeline"> </a></h4>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">steps</span> <span class="o">=</span> <span class="p">[</span><span class="n">step1</span><span class="p">]</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="n">steps</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Run-Experiment">Run Experiment<a class="anchor-link" href="#Run-Experiment"> </a></h4>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="s1">&#39;aml_exp&#39;</span><span class="p">)</span>
+<span class="n">script_run</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+<span class="n">script_run</span><span class="o">.</span><span class="n">wait_for_completion</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">RunDetails</span><span class="p">(</span><span class="n">script_run</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Review">Review<a class="anchor-link" href="#Review"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Azure-Portal">Azure Portal<a class="anchor-link" href="#Azure-Portal"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I find it best to simply go to the experiment portal url to review from the gui. It contains all the runs from your experiment and makes it easy to review changes from a central location.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">script_run</span><span class="o">.</span><span class="n">get_portal_url</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;https://ml.azure.com/runs/0e922ade-bbce-44c9-94c1-33ebdb17e44f?wsid=/subscriptions/f3b5840b-706e-44ba-8aa1-6fd3fc8aaab0/resourcegroups/ds-workspace/workspaces/minion-lab&amp;tid=e6777dcd-6f87-4dd0-92e5-e98312157dac&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Metrics">Metrics<a class="anchor-link" href="#Metrics"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>However, you can choose to do the model review inside the notebook too.</p>
+<p>The first place to look when doing this is the experiments metrics. In this example I'm logging the mse and mae for validation &amp; test datasets for each model</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">step_name</span> <span class="o">=</span> <span class="s1">&#39;train_step&#39;</span>
+<span class="n">step</span> <span class="o">=</span> <span class="n">script_run</span><span class="o">.</span><span class="n">find_step_run</span><span class="p">(</span><span class="n">step_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">metrics_dict</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metrics_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;best_model&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">metrics_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;best_score&#39;</span><span class="p">)</span><span class="si">:</span><span class="s2">0.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[1m&#39;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;Model                        Val      Tst&quot;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[0m&#39;</span><span class="p">)</span>
+<span class="n">metrics_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">list</span><span class="p">),</span> <span class="n">metrics_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+
+<span class="n">mae_metrics</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">metrics_list</span><span class="p">:</span>
+    <span class="n">splits</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+    <span class="n">grp</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="n">mae_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">model</span><span class="p">,</span> <span class="n">grp</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    
+<span class="n">mae_metrics</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">mae_metrics</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">o</span><span class="p">:</span> <span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="k">for</span> <span class="n">cur</span><span class="p">,</span> <span class="n">nxt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mae_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">mae_metrics</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]):</span>
+    <span class="n">name_1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">value_1</span> <span class="o">=</span> <span class="n">cur</span>
+    <span class="n">name_2</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">value_2</span> <span class="o">=</span> <span class="n">nxt</span>
+    <span class="k">assert</span> <span class="n">name_1</span> <span class="o">==</span> <span class="n">name_2</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name_1</span><span class="si">:</span><span class="s1">25s</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">value_1</span><span class="si">:</span><span class="s1">0.4f</span><span class="si">}</span><span class="s1"> | </span><span class="si">{</span><span class="n">value_2</span><span class="si">:</span><span class="s1">0.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>single_step_dense: 0.1610
+
+<span class="ansi-bold">Model                        Val      Tst</span>
+baseline                 : 0.1176 | 0.1872
+conv                     : 0.0875 | 0.1773
+linear                   : 3.0643 | 4.7024
+lstm                     : 0.9358 | 2.6143
+multi_step_dense         : 0.1977 | 0.6740
+single_step_dense        : 0.1043 | 0.1610
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="All-Stored-Files">All Stored Files<a class="anchor-link" href="#All-Stored-Files"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It can also be useful to review the log files to figure out wtf is going wrong constantly...</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">files</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">get_file_names</span><span class="p">()</span>
+<span class="n">files</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;azureml-logs/20_image_build_log.txt&#39;,
+ &#39;azureml-logs/55_azureml-execution-tvmps_1d261b42abd5181b8b59daf381ea85917514878d6568f63fa19a6608f53ca32c_d.txt&#39;,
+ &#39;azureml-logs/65_job_prep-tvmps_1d261b42abd5181b8b59daf381ea85917514878d6568f63fa19a6608f53ca32c_d.txt&#39;,
+ &#39;azureml-logs/70_driver_log.txt&#39;,
+ &#39;azureml-logs/75_job_post-tvmps_1d261b42abd5181b8b59daf381ea85917514878d6568f63fa19a6608f53ca32c_d.txt&#39;,
+ &#39;azureml-logs/process_info.json&#39;,
+ &#39;azureml-logs/process_status.json&#39;,
+ &#39;baseline_pred_1617395547.png&#39;,
+ &#39;conv_pred_1617395562.png&#39;,
+ &#39;feature_distribution_check_1617395545.png&#39;,
+ &#39;linear_coef_1617395551.png&#39;,
+ &#39;linear_pred_1617395551.png&#39;,
+ &#39;logs/azureml/106_azureml.log&#39;,
+ &#39;logs/azureml/dataprep/backgroundProcess.log&#39;,
+ &#39;logs/azureml/dataprep/backgroundProcess_Telemetry.log&#39;,
+ &#39;logs/azureml/executionlogs.txt&#39;,
+ &#39;logs/azureml/job_prep_azureml.log&#39;,
+ &#39;logs/azureml/job_release_azureml.log&#39;,
+ &#39;logs/azureml/stderrlogs.txt&#39;,
+ &#39;logs/azureml/stdoutlogs.txt&#39;,
+ &#39;lstm_pred_1617395572.png&#39;,
+ &#39;multi_step_dense_pred_1617395558.png&#39;,
+ &#39;outputs/model/conv/saved_model.pb&#39;,
+ &#39;outputs/model/conv/variables/variables.data-00000-of-00001&#39;,
+ &#39;outputs/model/conv/variables/variables.index&#39;,
+ &#39;outputs/model/linear/saved_model.pb&#39;,
+ &#39;outputs/model/linear/variables/variables.data-00000-of-00001&#39;,
+ &#39;outputs/model/linear/variables/variables.index&#39;,
+ &#39;outputs/model/lstm/saved_model.pb&#39;,
+ &#39;outputs/model/lstm/variables/variables.data-00000-of-00001&#39;,
+ &#39;outputs/model/lstm/variables/variables.index&#39;,
+ &#39;outputs/model/multi_step_dense/saved_model.pb&#39;,
+ &#39;outputs/model/multi_step_dense/variables/variables.data-00000-of-00001&#39;,
+ &#39;outputs/model/multi_step_dense/variables/variables.index&#39;,
+ &#39;outputs/model/single_step_dense/saved_model.pb&#39;,
+ &#39;outputs/model/single_step_dense/variables/variables.data-00000-of-00001&#39;,
+ &#39;outputs/model/single_step_dense/variables/variables.index&#39;,
+ &#39;performance_mae_1617395572.png&#39;,
+ &#39;single_step_dense_pred_1617395555.png&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Clean-up">Clean up<a class="anchor-link" href="#Clean-up"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Delete-Compute-Cluster">Delete Compute Cluster<a class="anchor-link" href="#Delete-Compute-Cluster"> </a></h3><p>This is an important step if you don't want save some money 😉</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;starting compute cleanup&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">compute</span> <span class="ow">in</span> <span class="n">ws</span><span class="o">.</span><span class="n">compute_targets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;deleting </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> instance&quot;</span><span class="p">)</span>
+    <span class="n">compute</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+    
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">compute_targets</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">continue</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;compute cleanup complete&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>starting compute cleanup
+deleting aml-compute instance
+compute cleanup complete
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><a class="u-url" href="/kslader8-thoughts/azureml/tensorflow/time-series/2021/04/04/aml-exp-continuation.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/kslader8-thoughts/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/kslader8-thoughts/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/kslader8-thoughts/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A chronicle of the random thoughts and adventures of Kevin</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
