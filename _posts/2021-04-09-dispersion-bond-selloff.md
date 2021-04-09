@@ -38,5 +38,5 @@ Strong demand for yield enhancement products (resulting in depressed volatility)
     - e.g. index vol: 20% & stocks weighted vol: 30% >> vega notional: 30/20= 1.5x the notional on the stocks
     
 ### Two market dynamics    
-- **Bullish Market** - Theta Flat outperforms due to the extra short index volatility normally
+- **Bullish Market** - Theta Flat outperforms due to the extra short index volatility
 - **Bearish Market** - Vega Flat is more resilient thanks to net long volatitily position
