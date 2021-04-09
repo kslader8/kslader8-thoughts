@@ -39,4 +39,4 @@ Strong demand for yield enhancement products resulting in depressed volatility f
     
 ### Two market dynamics    
 - **Bullish Market** - Theta Flat outperforms due to the extra short index volatility
-- **Bearish Market** - Vega Flat is more resilient thanks to net long volatitily position
+- **Bearish Market** - Vega Flat is more resilient thanks being to net long volatitily
