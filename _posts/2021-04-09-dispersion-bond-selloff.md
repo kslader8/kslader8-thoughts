@@ -32,7 +32,7 @@ Strong demand for yield enhancement products resulting in depressed volatility f
 
 
 ## How to choose the right dispersion?
-### Two ways to structure the dispersion:
+### Two ways to structure the dispersion
 - **Vega Flat** - the index vega notional is set equal to the total vega notional of the stocks
 - **Theta Flat** - the index vega notional is overweight and higher than the total vega notional on the stocks
     - e.g. index vol: 20% & stocks weighted vol: 30% >> vega notional: 30/20= 1.5x the notional on the stocks
