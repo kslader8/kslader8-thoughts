@@ -41,6 +41,9 @@ Strong demand for yield enhancement products resulting in depressed volatility f
 - **Bullish Market** - Theta Flat outperforms due to the extra short index volatility
 - **Bearish Market** - Vega Flat is more resilient thanks being to net long volatitily
 
+### Stock Selection
+I personally recommend ranking the stocks in the index by a metric that helps predict good and bad volatility. An easy one that I have used is **Interest Expense / EDBITDA** to select the top ~3-5 and the bottom ~4-8
+
 
 ## What risks do you bear with dispersion?
 - **Market Risk** - The potential loss of the entire premium invested and unbounded losses in the worse case scenario 
