@@ -15,12 +15,12 @@ Dispersion is a relative value trade comprised of
 
 
 ## Why trade dispersion?
-Strong demand by outright investors for index performance protection (because of put options)
+Strong demand by outright investors for index performance protection from puts because of
 - A relatively high implied volatiltiy on the index in relation to its components
 - A steeper skew on an index's implied volatitly that that of single stocks
 
-Strong demand for yield enhancement products (resulting in depressed volatility)
-- The impacts of hedging these products pushes 
+Strong demand for yield enhancement products resulting in depressed volatility from
+- The impacts of hedging these products
 - The call overwritting flows on these products pushing short term vol lower on single stocks
 
 **Dispersion trades caputre both of these dislocations!**
