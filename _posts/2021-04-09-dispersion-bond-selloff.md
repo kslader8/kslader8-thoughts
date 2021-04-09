@@ -4,8 +4,6 @@ categories: [trading]
 title: Dispersion as a Hedge Against Bond Selloff?
 ---
 
-# Dispersion as a Hedge Against Bond Selloff?
-
 ## Conjecture
 When bonds selloff, investors should expect a wave of equity dispersion and subdued index volatility.
 
