@@ -9,7 +9,7 @@ When bonds selloff, investors should expect a wave of equity dispersion and subd
 
 
 ## What is a dispersion trade?
-Dispersion is a velative value trade comprised of:
+Dispersion is a relative value trade comprised of
 - A short position on the underlying index's implied volatility. The lower the realized volatility the better
 - A long position on the index components (that are likely to have volatility spike). The higher the average realized voatility the better.
 
