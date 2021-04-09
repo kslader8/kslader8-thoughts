@@ -27,7 +27,7 @@ Strong demand for yield enhancement products (resulting in depressed volatility)
 
 
 ## Why consider dispersion when bonds selloff? 
-- **Significant secter rotation**, usually leads to larger winners and losers, opening opportunities for depressed volatility levels on the index, but causing single stock volatilities to increase materially
+- **Significant sector rotation**, usually leads to larger winners and losers, opening opportunities for depressed volatility levels on the index, but causing single stock volatilities to increase materially
 - **Correlation discrepancies** between the equity sector to bonds (USD 10Y Swap vs 3M RV SPX Baskets)
 
 
