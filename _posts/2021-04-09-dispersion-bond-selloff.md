@@ -26,12 +26,12 @@ Strong demand for yield enhancement products (resulting in depressed volatility)
 **Dispersion trades caputre both of these dislocations!**
 
 
-## Potential benefits of considering a dispersion as a hedge against a bond selloff 
+## Why consider dispersion when bonds selloff? 
 - **Significant secter rotation**, usually leads to larger winners and losers, opening opportunities for depressed volatility levels on the index, but causing single stock volatilities to increase materially
 - **Correlation discrepancies** between the equity sector to bonds (USD 10Y Swap vs 3M RV SPX Baskets)
 
 
-## Choosing the right dispersion
+## How to choose the right dispersion?
 ### Two ways to structure the dispersion:
 - **Vega Flat** - the index vega notional is set equal to the total vega notional of the stocks
 - **Theta Flat** - the index vega notional is overweight and higher than the total vega notional on the stocks
