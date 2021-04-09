@@ -40,3 +40,9 @@ Strong demand for yield enhancement products resulting in depressed volatility f
 ### Two market dynamics    
 - **Bullish Market** - Theta Flat outperforms due to the extra short index volatility
 - **Bearish Market** - Vega Flat is more resilient thanks being to net long volatitily
+
+
+## What risks do you bear with dispersion?
+- **Market Risk** - The potential loss of the entire premium invested and unbounded losses in the worse case scenario 
+- **Credit Risk** - The trade creates a credit risk on the counterparty and the guarantor. The counterparty's and the guarantor's insolvency may notably result in the partial or toal loss of the invested amount
+- **Liquidity Risk** - Market dislocations may render the product illiquid and impossible to withdroaw from
