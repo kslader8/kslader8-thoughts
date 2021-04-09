@@ -23,7 +23,7 @@ Strong demand for yield enhancement products resulting in depressed volatility f
 - The impacts of hedging these products
 - The call overwritting flows on these products pushing short term vol lower on single stocks
 
-**Dispersion trades caputre both of these dislocations!**
+**Dispersion trades capture both of these dislocations!**
 
 
 ## Why consider dispersion when bonds selloff? 
